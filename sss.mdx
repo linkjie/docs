@@ -1,5 +1,5 @@
 ---
-title: 'Development'
+title: 'Text Search'
 description: 'Preview changes locally to update your docs'
 ---
 
@@ -10,99 +10,250 @@ description: 'Preview changes locally to update your docs'
 
 Follow these steps to install and run Mintlify on your operating system:
 
-**Step 1**: Install Mintlify:
+以a4-outb-merchant-fe项目为例
+当前项目环境：
+antd:4.22.4
+react:17.0.2
+react-dom:17.0.2
+next:12.3.1
+@types/react:18.3.12
+@types/react-dom:17.0.39
+eslint-config-next:12.1.0
+next-with-less:2.0.5
+node:18.20.0
 
-<CodeGroup>
+1、v12升级到v13
+版本升级：
+next -> 13.5.11
+react -> 18.2.0
+react-dom -> 18.2.0
+@types/react -> 18.3.12
+@types/react-dom -> 18.3.1
+eslint-config-next -> 13.5.11
+next-with-less -> 3.0.1
 
-  ```bash npm
-  npm i -g mintlify
-  ```
+next新版本变化：
+升级：版本 13 |Next.js
+1.使用内置字体
+执行以下命令，将自动转换：
+npx @next/codemod@latest built-in-next-font .
+例如：
+import { Inter } from '@next/font/google'
+转换为：
+import { Inter } from 'next/font/google'
+2.重命名图像导入
+执行以下命令，将自动转换：
+npx @next/codemod@latest next-image-to-legacy-image .
+例如：
+import Image1 from 'next/image'
+import Image2 from 'next/future/image'
+ 
+export default function Home() {
+  return (
+    <div>
+      <Image1 src="/test.jpg" width="200" height="300" />
+      <Image2 src="/test.png" width="500" height="400" />
+    </div>
+  )
+}
+转换为：
+// 'next/image' becomes 'next/legacy/image'
+import Image1 from 'next/legacy/image'
+// 'next/future/image' becomes 'next/image'
+import Image2 from 'next/image'
+ 
+export default function Home() {
+  return (
+    <div>
+      <Image1 src="/test.jpg" width="200" height="300" />
+      <Image2 src="/test.png" width="500" height="400" />
+    </div>
+  )
+}
+3.迁移到新图像组件
+执行以下命令，将自动转换：
+npx @next/codemod@latest next-image-to-legacy-image .
+例如：
+import Image1 from 'next/image'
+import Image2 from 'next/future/image'
+ 
+export default function Home() {
+  return (
+    <div>
+      <Image1 src="/test.jpg" width="200" height="300" />
+      <Image2 src="/test.png" width="500" height="400" />
+    </div>
+  )
+}
+转换为：
+// 'next/image' becomes 'next/legacy/image'
+import Image1 from 'next/legacy/image'
+// 'next/future/image' becomes 'next/image'
+import Image2 from 'next/image'
+ 
+export default function Home() {
+  return (
+    <div>
+      <Image1 src="/test.jpg" width="200" height="300" />
+      <Image2 src="/test.png" width="500" height="400" />
+    </div>
+  )
+}
+4.从链接组件中删除标记<a>
+执行以下命令，将自动转换：
+npx @next/codemod@latest new-link .
+例如：
+<Link href="/about">
+  <a>About</a>
+</Link>
+// transforms into
+<Link href="/about">
+  About
+</Link>
+ 
+<Link href="/about">
+  <a onClick={() => console.log('clicked')}>About</a>
+</Link>
+// transforms into
+<Link href="/about" onClick={() => console.log('clicked')}>
+  About
+</Link>
+5.nodejs版本最低要求16.14.0
+6.react版本最低要求为18.2.0
+7.target配置属性被移除，使用output代替
 
-```bash yarn
-yarn global add mintlify
-```
+react新版本变化：
+如何升级到 React 18 – React 中文文档
+客户端渲染 API 的更新 
+1、引入新root API，createRoot代替ReactDOM.render
+2、root.unmount替代unmountComponentAtNode
+3、移除render回调函数
+服务端渲染 API 的更新 
+1、废弃renderToNodeStream
+2、新增renderToPipeableStream、renderToReadableStream
+3、限制renderToString、renderToStaticMarkup
+更新 TypeScript 类型定义
+1、需要明确指出props的定义
 
-</CodeGroup>
+升级中遇到的问题：
+1、函数组件中props类型定义不全导致报错
+更新@types/react后对props类型定义要求更严格，补全props定义。
+2、部分API废弃导致报错
+ReactDOM.render废弃，使用createRoot代替。unmountComponentAtNode废弃，使用render.unmount代替。
 
-**Step 2**: Navigate to the docs directory (where the `docs.json` file is located) and execute the following command:
+2、v13升级到v14
+版本升级：
+next -> 13.5.11
+react -> 保持不变，或18.2.0以上
+react-dom -> 保持不变，或18.2.0以上
+@types/react -> 保持不变，或18.3.12以上
+@types/react-dom -> 保持不变，18.3.1以上
+eslint-config-next -> 保持不变
+next-with-less  不再支持v14
 
-```bash
-mintlify dev
-```
+next新版本变化：
+Upgrading: Version 14 | Next.js
+1、ImageResponse迁移
+执行以下命令，将自动转换：
+npx @next/codemod@latest next-og-import .
+例如：
+import { ImageResponse } from 'next/server'
+转换为：
+import { ImageResponse } from 'next/og'
+2、viewport导出
+执行以下命令，将自动转换：
+npx @next/codemod@latest metadata-to-viewport-export .
+例如：
+export const metadata = {
+  title: 'My App',
+  themeColor: 'dark',
+  viewport: {
+    width: 1,
+  },
+}
+转换为：
+export const metadata = {
+  title: 'My App',
+}
+ 
+export const viewport = {
+  width: 1,
+  themeColor: 'dark',
+}
 
-A local preview of your documentation will be available at `http://localhost:3000`.
+3、nodejs版本最低要求18.17.0
 
-### Custom Ports
+升级中遇到的问题：
+1、next-transpile-modules已停止维护导致报错
+报错信息如下：
 
-By default, Mintlify uses port 3000. You can customize the port Mintlify runs on by using the `--port` flag. To run Mintlify on port 3333, for instance, use this command:
+Release The End. · martpie/next-transpile-modules · GitHub
+使用transpilePackages配置项：
+-const withTM = require('next-transpile-modules')(['awesome_module']);
 
-```bash
-mintlify dev --port 3333
-```
+-module.exports = withTM({});
++module.exports = {
++  transpilePackages: ['awesome_module'],
++};
 
-If you attempt to run Mintlify on a port that's already in use, it will use the next available port:
+2、v14升级到v15
+Upgrading: Version 15 | Next.js
+版本升级：
+next -> 15.2.4
+react -> 19.1.0
+react-dom -> 19.1.0
+@types/react -> 19.1.0
+@types/react-dom -> 19.1.0
+antd-mobile -> 5.39.0
+sass -> 1.86.3
 
-```md
-Port 3000 is already in use. Trying 3001 instead.
-```
+next （pages router）新版本变化：
+next v15主要的更新还是在于App Router，Pages Router向下兼容。
+Next.js 15 | Next.js
+1、支持react19
+2、Turbopack Dev性能和稳定性改进
+3、next.config.ts支持ts
+4、优化外部软件包的捆绑
+新增bundlePagesRouterDependencies配置项，在Pages Routers中自动捆绑外部包，而无需通过transpilePackages手动设置。
+const nextConfig = {
+  // Automatically bundle external packages in the Pages Router:
+  bundlePagesRouterDependencies: true,
+  // Opt specific packages out of bundling for both App and Pages Router:
+  serverExternalPackages: ['package-name'],
+};
+ 
+export default nextConfig;
+5、ESLint 9 支持
+为了确保平稳过渡，Next.js保持向后兼容，这意味着你可以继续使用 ESLint 8 或 9。
+6、nodejs版本最低要求18.17.0
 
-## Mintlify Versions
+react新版本变化：
+React v19 – React 中文文档
+1、删除弃用的API
+可以通过以下指令转换为 React 19 中的新 API 和模式：
+npx codemod@latest react/19/migration-recipe
 
-Please note that each CLI release is associated with a specific version of Mintlify. If your local website doesn't align with the production version, please update the CLI:
+2、TypeScript 更改
+执行以下指令来迁移大多数与类型相关的重大更改：
+npx types-react-codemod@latest preset-19 ./path-to-app
 
-<CodeGroup>
+升级中遇到的问题：
+1、新的API被弃用
+element.ref被弃用，使用element.props.ref
+2、使用@react-spring/web时报类型错误
 
-```bash npm
-npm i -g mintlify@latest
-```
+改用以下写法：
+const AnimatedDivFill = animated('div');
+  return (
+    <div ref={ref}>
+      <AnimatedDivFill style={styles}>{children}</AnimatedDivFill>
+    </div>
+  );
 
-```bash yarn
-yarn global upgrade mintlify
-```
+3、使用bundlePagesRouterDependencies配置项导致ant-mobile全局样式导入问题
+不使用bundlePagesRouterDependencies，改用transpilePackages。
+4、sass报警告
+@important被弃用，使用@use代替。嵌套规则在声明之前触发警告，把声明放到嵌套规则之前，或者用&{}包裹声明。
 
-</CodeGroup>
-
-## Validating Links
-
-The CLI can assist with validating reference links made in your documentation. To identify any broken links, use the following command:
-
-```bash
-mintlify broken-links
-```
-
-## Deployment
-
-<Tip>
-  Unlimited editors available under the [Pro
-  Plan](https://mintlify.com/pricing) and above.
-</Tip>
-
-If the deployment is successful, you should see the following:
-lkj hello world
-
-<Frame>
-  <img src="/images/checks-passed.png" style={{ borderRadius: '0.5rem' }} />
-</Frame>
-
-## Code Formatting
-
-We suggest using extensions on your IDE to recognize and format MDX. If you're a VSCode user, consider the [MDX VSCode extension](https://marketplace.visualstudio.com/items?itemName=unifiedjs.vscode-mdx) for syntax highlighting, and [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) for code formatting.
-
-## Troubleshooting
-
-<AccordionGroup>
-  <Accordion title='Error: Could not load the "sharp" module using the darwin-arm64 runtime'>
-
-    This may be due to an outdated version of node. Try the following:
-    1. Remove the currently-installed version of mintlify: `npm remove -g mintlify`
-    2. Upgrade to Node v19 or higher.
-    3. Reinstall mintlify: `npm install -g mintlify`
-  </Accordion>
-
-  <Accordion title="Issue: Encountering an unknown error">
-  
-    Solution: Go to the root of your device and delete the \~/.mintlify folder. Afterwards, run `mintlify dev` again.
-  </Accordion>
-</AccordionGroup>
-
-Curious about what changed in the CLI version? [Check out the CLI changelog.](https://www.npmjs.com/package/mintlify?activeTab=versions)
+是否选择升级v15：
+如果项目处于活跃开发阶段，之后打算向App Router迁移可以升级到v15。如果不准备向App Router迁移，就没有必要升级到v15，新特性对Pages Router收益有限，对于大多数使用 Pages Router 的成熟项目，除非有明确需要的 v15 特性，否则没必要升级到v15。
