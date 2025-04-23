@@ -16,8 +16,11 @@
 
       const replacement = document.createElement("button");
       replacement.id = "search-box";
+      const hit = document.createElement("div");
+      hit.id = "hits";
       // replacement.className = btn.className;
       btn.replaceWith(replacement);
+      replacement.after(hit);
 
       const search = instantsearch({
         indexName: "12-f68f320d",
@@ -35,7 +38,7 @@
         instantsearch.widgets.hits({
           container: "#hits",
           templates: {
-            item: '<div>{{#helpers.highlight}}{ "attribute": "title" }}{{/helpers.highlight}}</div>',
+            item: '<p>{{#helpers.highlight}}{ "attribute": "name", "highlightedTagName": "mark" }{{/helpers.highlight}}</p>',
           },
         }),
       ]);
@@ -50,8 +53,11 @@
 
       const replacement = document.createElement("button");
       replacement.id = "search-box";
+      const hit = document.createElement("div");
+      hit.id = "hits";
       // replacement.className = btn.className;
       btn.replaceWith(replacement);
+      replacement.after(hit);
 
       const search = instantsearch({
         indexName: "12-f68f320d",
@@ -66,12 +72,12 @@
           container: "#search-box",
           placeholder: "搜索文档...",
         }),
-        // instantsearch.widgets.hits({
-        //   container: "#hits",
-        //   templates: {
-        //     item: '<div>{{#helpers.highlight}}{ "attribute": "title" }}{{/helpers.highlight}}</div>',
-        //   },
-        // }),
+        instantsearch.widgets.hits({
+          container: "#hits",
+          templates: {
+            item: '<p>{{#helpers.highlight}}{ "attribute": "name", "highlightedTagName": "mark" }{{/helpers.highlight}}</p>',
+          },
+        }),
       ]);
 
       search.start();
