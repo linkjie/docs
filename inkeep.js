@@ -11,6 +11,14 @@
   script.onload = function () {
     a += 1;
     if (a === 2) {
+      // document.createElement('button')
+      const btn = document.getElementById("search-bar-entry");
+
+      const replacement = document.createElement("button");
+      replacement.id = "search-box";
+      // replacement.className = btn.className;
+      btn.replaceWith(replacement);
+
       const search = instantsearch({
         indexName: "12-f68f320d",
         searchClient: algoliasearch(
@@ -38,6 +46,13 @@
   script2.onload = function () {
     a += 1;
     if (a === 2) {
+      const btn = document.getElementById("search-bar-entry");
+
+      const replacement = document.createElement("button");
+      replacement.id = "search-box";
+      // replacement.className = btn.className;
+      btn.replaceWith(replacement);
+
       const search = instantsearch({
         indexName: "12-f68f320d",
         searchClient: algoliasearch(
